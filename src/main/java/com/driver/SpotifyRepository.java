@@ -28,7 +28,7 @@ public class SpotifyRepository {
         playlistListenerMap = new HashMap<>(); //done
         creatorPlaylistMap = new HashMap<>(); //done
         userPlaylistMap = new HashMap<>();
-        songLikeMap = new HashMap<>();
+        songLikeMap = new HashMap<>(); //done
 
         users = new ArrayList<>(); //done
         songs = new ArrayList<>(); //done
@@ -40,6 +40,7 @@ public class SpotifyRepository {
     public User createUser(String name, String mobile) {
         User user = new User(name, mobile);
         users.add(user);
+        userPlaylistMap.put(user, new ArrayList<>());
         return user;
     }
 
@@ -65,7 +66,7 @@ public class SpotifyRepository {
         albums.add(album);
         artistAlbumMap.get(currArtist).add(album);
         albumSongMap.put(album, new ArrayList<>());
-        return  album;
+        return album;
     }
 
     public Song createSong(String title, String albumName, int length) throws Exception{
@@ -108,6 +109,8 @@ public class SpotifyRepository {
                 playlistSongMap.get(playlist).add(song);
             }
         }
+
+        userPlaylistMap.get(currUser).add(playlist);
         creatorPlaylistMap.put(currUser, playlist);
 
         playlistListenerMap.put(playlist, new ArrayList<>());
@@ -127,6 +130,7 @@ public class SpotifyRepository {
         }
         Playlist playlist = new Playlist(title);
         playlists.add(playlist);
+        userPlaylistMap.get(currUser).add(playlist);
         playlistSongMap.put(playlist, new ArrayList<>());
         for(String songTitle: songTitles){
             for(Song song: songs){
@@ -164,10 +168,10 @@ public class SpotifyRepository {
         }
 
         if(creatorPlaylistMap.containsKey(currUser)){
-            if(creatorPlaylistMap.get(currUser).getTitle().equals(playlistTitle)){
-                return currPlaylist;
-            }
+            return currPlaylist;
         }
+
+        userPlaylistMap.get(currUser).add(currPlaylist);
         if(playlistListenerMap.containsKey(currPlaylist)){
             if(!playlistListenerMap.get(currPlaylist).contains(currUser)){
                 playlistListenerMap.get(currPlaylist).add(currUser);
