@@ -168,8 +168,10 @@ public class SpotifyRepository {
                 return currPlaylist;
             }
         }
-        if(!playlistListenerMap.get(currPlaylist).contains(currUser)){
-            playlistListenerMap.get(currPlaylist).add(currUser);
+        if(playlistListenerMap.containsKey(currPlaylist)){
+            if(!playlistListenerMap.get(currPlaylist).contains(currUser)){
+                playlistListenerMap.get(currPlaylist).add(currUser);
+            }
         }
         return currPlaylist;
     }
